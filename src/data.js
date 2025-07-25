@@ -1,7 +1,4 @@
-
-
-
-const products = [
+export const products = [
   { id: 1, name: "Blue T-Shirt", category: "Clothing", price: 150, inStock: true },
   { id: 2, name: "Black Jeans", category: "Clothing", price: 300, inStock: false },
   { id: 3, name: "Red Sneakers", category: "Shoes", price: 500, inStock: true },
