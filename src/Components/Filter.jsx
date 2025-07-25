@@ -1,45 +1,66 @@
-function Filter({
-        searchTerm,
-        setSearchTerm, 
-        categories,
-        selectedCategory, 
-        setSelectedCategory, 
-        sortOrder, 
-        setSortOrder, 
-        showInStock, 
-        setShowInStock,
-}){
-    return(
-        <div className="filter-container">
-            <input 
-                type="text" 
-                placeholder="Search products..." 
-                value={searchTerm} 
-                onChange={(e) => setSearchTerm(e.target.value)} 
-            />
-            <select 
-                value={selectedCategory} 
-                onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-                {categories.map((category, index) => (
-                    <option key={index} value={category}>{category}</option>
-                ))}
-            </select>
-            <select 
-                value={sortOrder} 
-                onChange={(e) => setSortOrder(e.target.value)}
-            >
-                <option value="asc">Price: Low to High</option>
-                <option value="desc">Price: High to Low</option>
-            </select>
-            <label>
-                <input 
-                    type="checkbox" 
-                    checked={showInStock} 
-                    onChange={(e) => setShowInStock(e.target.checked)} 
-                />
-                Show In Stock Only
-            </label>
-        </div>
-    )
-}
+const SearchBar = ({ searchQuery, setSearchQuery, selectedCategory, setSelectedCategory, showInStockOnly, setShowInStockOnly }) => {
+  const categories = ["All", "Clothing", "Shoes", "Accessories", "Furniture"];
+
+  return (
+    <div style={{ 
+      marginBottom: '20px', 
+      padding: '20px', 
+      backgroundColor: '#f5f5f5', 
+      borderRadius: '8px' 
+    }}>
+      <div style={{ marginBottom: '15px' }}>
+        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+          Search by Name:
+        </label>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search products..."
+          style={{
+            width: '100%',
+            padding: '10px',
+            fontSize: '16px',
+            border: '1px solid #ddd',
+            borderRadius: '4px'
+          }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '15px' }}>
+        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+          Filter by Category:
+        </label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '10px',
+            fontSize: '16px',
+            border: '1px solid #ddd',
+            borderRadius: '4px'
+          }}
+        >
+          {categories.map(category => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
+          <input
+            type="checkbox"
+            checked={showInStockOnly}
+            onChange={(e) => setShowInStockOnly(e.target.checked)}
+            style={{ marginRight: '8px', transform: 'scale(1.2)' }}
+          />
+          Show only in-stock items
+        </label>
+      </div>
+    </div>
+  );
+};

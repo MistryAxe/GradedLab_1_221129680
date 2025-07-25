@@ -1,43 +1,52 @@
-import { useState } from 'react'
-import { products } from './data'
-import Filter from './Components/Filter'
-import ProductList from './Components/ProductList'
-
-function App() {
-  const [searchTerm, setSearchTerm] = useState('');
+const App = () => {
+  // State management using useState hooks
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [showInStock, setShowInStock] = useState(false);
+  const [showInStockOnly, setShowInStockOnly] = useState(false);
 
-  const categories = ['All', ...new Set(products.map(product => product.category))];
+  // Filtering logic - always filter from the original products array
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    // Filter by name (case-insensitive)
+    const matchesName = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Filter by category
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    const matchesStock = !showInStock || product.inStock;
-
-    return matchesSearch && matchesCategory && matchesStock;
+    
+    // Filter by stock status
+    const matchesStock = !showInStockOnly || product.inStock;
+    
+    // Return true only if all conditions are met
+    return matchesName && matchesCategory && matchesStock;
   });
 
   return (
-    <>
-    <div className="Filter-App" style={{ padding: '20px' }}> 
-      <h1>ShopEasy Product Catalog</h1>
-      <Filter 
-        searchTerm={searchTerm} 
-        setSearchTerm={setSearchTerm} 
-        categories={categories} 
-        selectedCategory={selectedCategory} 
-        setSelectedCategory={setSelectedCategory} 
-        sortOrder={sortOrder} 
-        setSortOrder={setSortOrder} 
-        showInStock={showInStock} 
-        setShowInStock={setShowInStock}
+    <div style={{
+      maxWidth: '800px',
+      margin: '0 auto',
+      padding: '20px',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <header style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <h1 style={{ color: '#333', margin: '0' }}>
+          ShopEasy Product Catalog
+        </h1>
+        <p style={{ color: '#666', margin: '10px 0' }}>
+          Find the perfect products with our advanced filtering system
+        </p>
+      </header>
+
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        showInStockOnly={showInStockOnly}
+        setShowInStockOnly={setShowInStockOnly}
       />
-      <ProductList products={filteredProducts} sortOrder={sortOrder} />
 
+      <ProductList products={filteredProducts} />
     </div>
-    </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
